@@ -28,8 +28,7 @@ data "aws_subnet_ids" "this" {
 locals {
   userdata = <<EOF
 <powershell>
-Import-Module ECSTools
-Initialize-ECSAgent -Cluster "${aws_ecs_cluster.this.id}" -EnableTaskIAMRole
+Initialize-ECSAgent -Cluster ${var.env}-windows -EnableTaskIAMRole -LoggingDrivers '["json-file","awslogs"]'
 </powershell>
 <persist>true</persist>
 EOF

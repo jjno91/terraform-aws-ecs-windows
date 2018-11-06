@@ -89,7 +89,7 @@ resource "aws_autoscaling_group" "this" {
 #################################################
 
 resource "aws_autoscaling_policy" "up" {
-  name                   = "${var.env}-ecs-windows-scale-up"
+  name                   = "scale-up"
   scaling_adjustment     = "${var.scaling_adjustment}"
   adjustment_type        = "ChangeInCapacity"
   cooldown               = "${var.scaling_cooldown}"
@@ -114,7 +114,7 @@ resource "aws_cloudwatch_metric_alarm" "high" {
 }
 
 resource "aws_autoscaling_policy" "down" {
-  name                   = "${var.env}-ecs-windows-scale-down"
+  name                   = "scale-down"
   scaling_adjustment     = "-${var.scaling_adjustment}"
   adjustment_type        = "ChangeInCapacity"
   cooldown               = "${var.scaling_cooldown}"

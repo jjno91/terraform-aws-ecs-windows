@@ -47,7 +47,7 @@ variable "scaling_metric" {
 }
 
 variable "scaling_metric_period" {
-  description = "(optional) https://www.terraform.io/docs/providers/aws/r/cloudwatch_metric_alarm.html#evaluation_periods"
+  description = "(optional) https://www.terraform.io/docs/providers/aws/r/cloudwatch_metric_alarm.html#period"
   default     = "60"
 }
 

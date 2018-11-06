@@ -29,7 +29,7 @@ locals {
   userdata = <<EOF
 <powershell>
 Import-Module ECSTools
-Initialize-ECSAgent -Cluster "${aws_ecs_cluster.this}" -EnableTaskIAMRole
+Initialize-ECSAgent -Cluster "${aws_ecs_cluster.this.id}" -EnableTaskIAMRole
 </powershell>
 EOF
 }

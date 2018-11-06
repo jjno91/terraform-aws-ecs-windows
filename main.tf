@@ -31,6 +31,7 @@ locals {
 Import-Module ECSTools
 Initialize-ECSAgent -Cluster "${aws_ecs_cluster.this.id}" -EnableTaskIAMRole
 </powershell>
+<persist>true</persist>
 EOF
 }
 
@@ -121,6 +122,7 @@ resource "aws_iam_instance_profile" "this" {
 #################################################
 
 resource "aws_security_group" "this" {
+  name   = "${var.env}-ecs-windows"
   vpc_id = "${var.vpc_id}"
   tags   = "${merge(map("Name", "${var.env}-ecs-windows"), var.tags)}"
 }

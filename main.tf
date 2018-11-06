@@ -16,7 +16,7 @@ data "aws_ami" "this" {
 
   filter {
     name   = "name"
-    values = ["*amazon-ecs-optimized*"]
+    values = ["${var.ami_name_filter}"]
   }
 }
 

@@ -35,3 +35,8 @@ variable "max_size" {
   description = "(optional) Maximum node count for ASG"
   default     = "10"
 }
+
+variable "ami_name_filter" {
+  description = "(optional) Used to lookup the AMI that will be used in the cluster launch template"
+  default     = "Windows_Server-2016-English-Full-ECS_Optimized*"
+}

@@ -84,7 +84,59 @@ resource "aws_autoscaling_group" "this" {
   ]
 }
 
-# add target autoscaling
+#################################################
+# Auto-Scaling
+#################################################
+
+resource "aws_autoscaling_policy" "up" {
+  name                   = "${var.env}-ecs-windows-scale-down"
+  scaling_adjustment     = "${var.scaling_adjustment}"
+  adjustment_type        = "ChangeInCapacity"
+  cooldown               = "${var.scaling_cooldown}"
+  autoscaling_group_name = "${aws_autoscaling_group.this.name}"
+}
+
+resource "aws_cloudwatch_metric_alarm" "high" {
+  alarm_name          = "${var.env}-ecs-windows-high-usage"
+  alarm_description   = "This metric monitors high utililization of ECS resources"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  statistic           = "Average"
+  namespace           = "AWS/ECS"
+  metric_name         = "${var.scaling_metric}"
+  period              = "${var.scaling_metric_period}"
+  evaluation_periods  = "${var.scaling_evaluation_periods}"
+  threshold           = "${var.scaling_high_bound}"
+  alarm_actions       = ["${aws_autoscaling_policy.up.arn}"]
+
+  dimensions {
+    ClusterName = "${var.env}-windows"
+  }
+}
+
+resource "aws_autoscaling_policy" "down" {
+  name                   = "${var.env}-ecs-windows-scale-down"
+  scaling_adjustment     = "-${var.scaling_adjustment}"
+  adjustment_type        = "ChangeInCapacity"
+  cooldown               = "${var.scaling_cooldown}"
+  autoscaling_group_name = "${aws_autoscaling_group.this.name}"
+}
+
+resource "aws_cloudwatch_metric_alarm" "low" {
+  alarm_name          = "${var.env}-ecs-windows-low-usage"
+  alarm_description   = "This metric monitors low utililization of ECS resources"
+  comparison_operator = "LessThanOrEqualToThreshold"
+  statistic           = "Average"
+  namespace           = "AWS/ECS"
+  metric_name         = "${var.scaling_metric}"
+  period              = "${var.scaling_metric_period}"
+  evaluation_periods  = "${var.scaling_evaluation_periods}"
+  threshold           = "${var.scaling_low_bound}"
+  alarm_actions       = ["${aws_autoscaling_policy.down.arn}"]
+
+  dimensions {
+    ClusterName = "${var.env}-windows"
+  }
+}
 
 #################################################
 # IAM

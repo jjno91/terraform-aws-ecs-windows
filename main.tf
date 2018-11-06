@@ -35,7 +35,7 @@ EOF
 }
 
 resource "aws_launch_template" "this" {
-  image_id               = "${data.aws_ami.this}"
+  image_id               = "${data.aws_ami.this.image_id}"
   instance_type          = "${var.instance_type}"
   ebs_optimized          = true
   user_data              = "${base64encode(local.userdata)}"

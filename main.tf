@@ -62,10 +62,10 @@ resource "aws_launch_template" "this" {
 }
 
 resource "aws_autoscaling_group" "this" {
+  name                = "${var.env}-ecs-windows"
   min_size            = "${var.min_size}"
   max_size            = "${var.max_size}"
   vpc_zone_identifier = ["${data.aws_subnet_ids.this.ids}"]
-  tags                = "${merge(map("Name", var.env), var.tags)}"
 
   launch_template = {
     id      = "${aws_launch_template.this.id}"
@@ -83,6 +83,8 @@ resource "aws_autoscaling_group" "this" {
     "GroupTotalInstances",
   ]
 }
+
+# add target autoscaling
 
 #################################################
 # IAM

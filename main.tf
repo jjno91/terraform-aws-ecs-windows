@@ -62,7 +62,7 @@ resource "aws_launch_template" "this" {
 }
 
 resource "aws_autoscaling_group" "this" {
-  name_prefix         = "${var.env}-ecs-windows"
+  name_prefix         = "${var.env}-ecs-windows-"
   min_size            = "${var.min_size}"
   max_size            = "${var.max_size}"
   vpc_zone_identifier = ["${data.aws_subnet_ids.this.ids}"]
@@ -154,7 +154,7 @@ data "aws_iam_policy_document" "this" {
 }
 
 resource "aws_iam_role" "this" {
-  name_prefix        = "${var.env}-ecs-windows"
+  name_prefix        = "${var.env}-ecs-windows-"
   assume_role_policy = "${data.aws_iam_policy_document.this.json}"
 }
 
@@ -164,7 +164,7 @@ resource "aws_iam_role_policy_attachment" "this" {
 }
 
 resource "aws_iam_instance_profile" "this" {
-  name_prefix = "${var.env}-ecs-windows"
+  name_prefix = "${var.env}-ecs-windows-"
   role        = "${aws_iam_role.this.name}"
 }
 
@@ -173,7 +173,7 @@ resource "aws_iam_instance_profile" "this" {
 #################################################
 
 resource "aws_security_group" "this" {
-  name_prefix = "${var.env}-ecs-windows"
+  name_prefix = "${var.env}-ecs-windows-"
   vpc_id      = "${var.vpc_id}"
   tags        = "${merge(map("Name", "${var.env}-ecs-windows"), var.tags)}"
 

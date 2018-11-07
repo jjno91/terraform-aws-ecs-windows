@@ -40,7 +40,7 @@ resource "aws_launch_template" "this" {
   ebs_optimized          = true
   user_data              = "${base64encode(local.userdata)}"
   vpc_security_group_ids = ["${aws_security_group.this.id}"]
-  tags                   = "${merge(map("Name", var.env), var.tags)}"
+  tags                   = "${merge(map("Name", "${var.env}-ecs-windows"), var.tags)}"
 
   iam_instance_profile {
     name = "${aws_iam_instance_profile.this.name}"
@@ -52,12 +52,12 @@ resource "aws_launch_template" "this" {
 
   tag_specifications {
     resource_type = "volume"
-    tags          = "${merge(map("Name", var.env), var.tags)}"
+    tags          = "${merge(map("Name", "${var.env}-ecs-windows"), var.tags)}"
   }
 
   tag_specifications {
     resource_type = "instance"
-    tags          = "${merge(map("Name", var.env), var.tags)}"
+    tags          = "${merge(map("Name", "${var.env}-ecs-windows"), var.tags)}"
   }
 }
 

@@ -62,7 +62,7 @@ resource "aws_launch_template" "this" {
 }
 
 resource "aws_autoscaling_group" "this" {
-  name                = "${var.env}-ecs-windows"
+  name_prefix         = "${var.env}-ecs-windows"
   min_size            = "${var.min_size}"
   max_size            = "${var.max_size}"
   vpc_zone_identifier = ["${data.aws_subnet_ids.this.ids}"]
@@ -154,7 +154,7 @@ data "aws_iam_policy_document" "this" {
 }
 
 resource "aws_iam_role" "this" {
-  name               = "${var.env}-ecs-windows"
+  name_prefix        = "${var.env}-ecs-windows"
   assume_role_policy = "${data.aws_iam_policy_document.this.json}"
 }
 
@@ -164,8 +164,8 @@ resource "aws_iam_role_policy_attachment" "this" {
 }
 
 resource "aws_iam_instance_profile" "this" {
-  name = "${var.env}-ecs-windows"
-  role = "${aws_iam_role.this.name}"
+  name_prefix = "${var.env}-ecs-windows"
+  role        = "${aws_iam_role.this.name}"
 }
 
 #################################################
@@ -173,8 +173,9 @@ resource "aws_iam_instance_profile" "this" {
 #################################################
 
 resource "aws_security_group" "this" {
-  vpc_id = "${var.vpc_id}"
-  tags   = "${merge(map("Name", "${var.env}-ecs-windows"), var.tags)}"
+  name_prefix = "${var.env}-ecs-windows"
+  vpc_id      = "${var.vpc_id}"
+  tags        = "${merge(map("Name", "${var.env}-ecs-windows"), var.tags)}"
 
   lifecycle {
     create_before_destroy = true
@@ -192,11 +193,11 @@ resource "aws_security_group_rule" "ingress" {
 }
 
 resource "aws_security_group_rule" "egress" {
-  description              = "egress all"
-  type                     = "egress"
-  from_port                = 0
-  to_port                  = 0
-  protocol                 = "-1"
-  security_group_id        = "${aws_security_group.this.id}"
-  cidr_blocks              = ["0.0.0.0/0"]
+  description       = "egress all"
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  security_group_id = "${aws_security_group.this.id}"
+  cidr_blocks       = ["0.0.0.0/0"]
 }

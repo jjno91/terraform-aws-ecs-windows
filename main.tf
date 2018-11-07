@@ -35,6 +35,7 @@ EOF
 }
 
 resource "aws_launch_template" "this" {
+  name_prefix            = "${var.env}-ecs-windows-"
   image_id               = "${data.aws_ami.this.image_id}"
   instance_type          = "${var.instance_type}"
   ebs_optimized          = true

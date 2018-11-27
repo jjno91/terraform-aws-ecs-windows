@@ -31,6 +31,16 @@ variable "ami_name_filter" {
   default     = "Windows_Server-2016-English-Full-ECS_Optimized*"
 }
 
+variable "sized_block_device" {
+  description = "(optional) Name of the block device that the launch template will size"
+  default     = "/dev/sda1"
+}
+
+variable "ec2_disk_size" {
+  description = "(optional) Size of the root volume for your EC2 container instances"
+  default     = "50"
+}
+
 variable "min_size" {
   description = "(optional) Minimum node count for ASG"
   default     = "2"

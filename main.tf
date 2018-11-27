@@ -43,6 +43,14 @@ resource "aws_launch_template" "this" {
   vpc_security_group_ids = ["${aws_security_group.this.id}"]
   tags                   = "${merge(map("Name", "${var.env}-ecs-windows"), var.tags)}"
 
+  block_device_mappings {
+    device_name = "${var.sized_block_device}"
+
+    ebs {
+      volume_size = "${var.ec2_disk_size}"
+    }
+  }
+  
   iam_instance_profile {
     name = "${aws_iam_instance_profile.this.name}"
   }
